@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:exam_flutter/core/constants/app_constants.dart';
 import 'package:exam_flutter/features/food/models/restaurant_model.dart';
 import 'package:exam_flutter/features/food/services/api_service.dart';
 
@@ -25,8 +26,9 @@ class RestaurantProvider with ChangeNotifier {
     try {
       final cuisines = await _apiService.getCuisines();
       _allRestaurants = cuisines.map((cuisine) {
-        // Use a placeholder image for each restaurant based on cuisine
-        final imageUrl = 'https://dummyjson.com/image/400x200/FF6B35/white?text=$cuisine+Food';
+        // Use a landmark image for each restaurant based on cuisine
+        final imageUrl = AppConstants.cuisineLandmarks[cuisine] ?? 
+            AppConstants.defaultRestaurantImage;
         return RestaurantModel.fromCategory(cuisine, imageUrl);
       }).toList();
       _applySearch();

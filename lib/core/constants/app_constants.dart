@@ -67,4 +67,34 @@ class AppConstants {
   
   static const String appName = 'Food Delivery';
   static const String appVersion = '1.0.0';
+
+  // ==================== CUISINE LANDMARKS ====================
+  
+  static const Map<String, String> cuisineLandmarks = {
+    'Italian': 'assets/images/italian.png',
+    'Mexican': 'assets/images/mexican.png',
+    'Indian': 'assets/images/indian.png',
+    'Japanese': 'assets/images/japanese.png',
+    'French': 'assets/images/french.png',
+    'American': 'assets/images/italian.png',
+    'Asian': 'assets/images/japanese.png',
+    'Brazilian': 'assets/images/mexican.png',
+    'Cocktail': 'assets/images/french.png',
+    'Greek': 'assets/images/italian.png',
+    'Hawaiian': 'assets/images/mexican.png',
+    'Korean': 'assets/images/japanese.png',
+    'Lebanese': 'assets/images/indian.png',
+    'Mediterranean': 'assets/images/italian.png',
+    'Moroccan': 'assets/images/indian.png',
+    'Pakistani': 'assets/images/indian.png',
+    'Russian': 'assets/images/french.png',
+    'Smoothie': 'assets/images/french.png',
+    'Spanish': 'assets/images/mexican.png',
+    'Thai': 'assets/images/japanese.png',
+    'Turkish': 'assets/images/indian.png',
+    'Vietnamese': 'assets/images/japanese.png',
+    'Chinese': 'assets/images/japanese.png',
+  };
+
+  static const String defaultRestaurantImage = 'assets/images/italian.png';
 }

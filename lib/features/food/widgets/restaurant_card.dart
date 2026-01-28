@@ -43,17 +43,29 @@ class RestaurantCard extends StatelessWidget {
               children: [
                 Hero(
                   tag: 'restaurant_${restaurant.id}',
-                  child: Image.network(
-                    restaurant.imageUrl,
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      height: 200,
-                      color: Colors.grey[200],
-                      child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
-                    ),
-                  ),
+                  child: restaurant.imageUrl.startsWith('assets/')
+                      ? Image.asset(
+                          restaurant.imageUrl,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            height: 200,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
+                          ),
+                        )
+                      : Image.network(
+                          restaurant.imageUrl,
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            height: 200,
+                            color: Colors.grey[200],
+                            child: const Icon(Icons.restaurant, size: 50, color: Colors.grey),
+                          ),
+                        ),
                 ),
                 Positioned(
                   top: 12,
