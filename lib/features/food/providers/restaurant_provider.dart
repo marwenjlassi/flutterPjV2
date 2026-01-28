@@ -4,15 +4,18 @@ import 'package:exam_flutter/features/food/services/api_service.dart';
 
 class RestaurantProvider with ChangeNotifier {
   final ApiService _apiService;
-  List<RestaurantModel> _restaurants = [];
+  List<RestaurantModel> _allRestaurants = [];
+  List<RestaurantModel> _filteredRestaurants = [];
   bool _isLoading = false;
   String? _error;
+  String _searchQuery = '';
 
   RestaurantProvider(this._apiService);
 
-  List<RestaurantModel> get restaurants => _restaurants;
+  List<RestaurantModel> get restaurants => _filteredRestaurants;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  String get searchQuery => _searchQuery;
 
   Future<void> fetchRestaurants() async {
     _isLoading = true;
@@ -20,17 +23,36 @@ class RestaurantProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final categories = await _apiService.getCategories();
-      _restaurants = categories.map((cat) {
-        // Use a placeholder image for each restaurant based on category
-        final imageUrl = 'https://dummyjson.com/image/400x200/FF6B35/white?text=$cat';
-        return RestaurantModel.fromCategory(cat, imageUrl);
+      final cuisines = await _apiService.getCuisines();
+      _allRestaurants = cuisines.map((cuisine) {
+        // Use a placeholder image for each restaurant based on cuisine
+        final imageUrl = 'https://dummyjson.com/image/400x200/FF6B35/white?text=$cuisine+Food';
+        return RestaurantModel.fromCategory(cuisine, imageUrl);
       }).toList();
+      _applySearch();
     } catch (e) {
       _error = e.toString();
     } finally {
       _isLoading = false;
       notifyListeners();
+    }
+  }
+
+  void searchRestaurants(String query) {
+    _searchQuery = query;
+    _applySearch();
+    notifyListeners();
+  }
+
+  void _applySearch() {
+    if (_searchQuery.isEmpty) {
+      _filteredRestaurants = _allRestaurants;
+    } else {
+      _filteredRestaurants = _allRestaurants
+          .where((r) =>
+              r.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+              r.category.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .toList();
     }
   }
 }

@@ -93,9 +93,11 @@ class CartPage extends StatelessWidget {
                             );
                             await context.read<OrderProvider>().addOrder(order);
                             cart.clear();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Order placed successfully!')),
-                            );
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Order placed successfully!')),
+                              );
+                            }
                           },
                           child: const Text('PLACE ORDER', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                         ),

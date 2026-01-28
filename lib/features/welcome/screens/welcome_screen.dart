@@ -44,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppConstants.radiusLarge),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.2),
+                            color: Colors.black.withValues(alpha: 0.2),
                             blurRadius: 30,
                             offset: const Offset(0, 15),
                           ),
@@ -88,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                       'Delicious meals delivered\nright to your door',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white.withOpacity(0.95),
+                        color: Colors.white.withValues(alpha: 0.95),
                         height: 1.5,
                         fontWeight: FontWeight.w400,
                       ),
@@ -149,7 +149,7 @@ class WelcomeScreen extends StatelessWidget {
                       child: Text(
                         'or create a new account',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -171,7 +171,7 @@ class WelcomeScreen extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(AppConstants.spacing12),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
           ),
           child: Icon(

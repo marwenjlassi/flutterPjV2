@@ -129,14 +129,14 @@ class AppTheme {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
           borderSide: BorderSide(
-            color: AppConstants.lightText.withOpacity(0.3),
+            color: AppConstants.lightText.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
           borderSide: BorderSide(
-            color: AppConstants.lightText.withOpacity(0.3),
+            color: AppConstants.lightText.withValues(alpha: 0.3),
             width: 1,
           ),
         ),
@@ -168,7 +168,7 @@ class AppTheme {
           fontSize: 14,
         ),
         hintStyle: TextStyle(
-          color: AppConstants.lightText.withOpacity(0.7),
+          color: AppConstants.lightText.withValues(alpha: 0.7),
           fontSize: 14,
         ),
         errorStyle: const TextStyle(
@@ -257,7 +257,7 @@ class AppTheme {
   static LinearGradient get backgroundGradient => LinearGradient(
         colors: [
           AppConstants.backgroundColor,
-          AppConstants.primaryOrange.withOpacity(0.05),
+          AppConstants.primaryOrange.withValues(alpha: 0.05),
         ],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,

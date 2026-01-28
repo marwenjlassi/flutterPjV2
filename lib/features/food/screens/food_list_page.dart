@@ -27,7 +27,23 @@ class _FoodListPageState extends State<FoodListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(restaurant.name),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(restaurant.name),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.location_on, size: 12, color: AppConstants.primaryOrange),
+                const SizedBox(width: 4),
+                Text(
+                  restaurant.address,
+                  style: const TextStyle(fontSize: 11, fontWeight: FontWeight.normal, color: Colors.white70),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
       body: Consumer<FoodProvider>(
         builder: (context, provider, child) {

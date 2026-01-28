@@ -8,6 +8,7 @@ class RestaurantModel extends Equatable {
   final double rating;
   final double latitude;
   final double longitude;
+  final String address;
 
   const RestaurantModel({
     required this.id,
@@ -17,6 +18,7 @@ class RestaurantModel extends Equatable {
     required this.rating,
     required this.latitude,
     required this.longitude,
+    required this.address,
   });
 
   factory RestaurantModel.fromCategory(String category, String imageUrl) {
@@ -29,9 +31,10 @@ class RestaurantModel extends Equatable {
       rating: 4.0 + (category.length % 10) / 10,
       latitude: 48.8566 + (category.length % 5) * 0.01, // Simulated lat
       longitude: 2.3522 + (category.length % 7) * 0.01, // Simulated lng
+      address: '${10 + category.length} Foodie Street, ${category[0].toUpperCase()}${category.substring(1)} District',
     );
   }
 
   @override
-  List<Object?> get props => [id, name, imageUrl, category, rating, latitude, longitude];
+  List<Object?> get props => [id, name, imageUrl, category, rating, latitude, longitude, address];
 }

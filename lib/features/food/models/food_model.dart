@@ -6,9 +6,10 @@ class FoodModel extends Equatable {
   final String description;
   final double price;
   final double rating;
-  final String category;
+  final String category; // Cuisine type
   final String thumbnail;
-  final List<String> images;
+  final List<String> ingredients;
+  final int prepTime;
 
   const FoodModel({
     required this.id,
@@ -18,35 +19,39 @@ class FoodModel extends Equatable {
     required this.rating,
     required this.category,
     required this.thumbnail,
-    required this.images,
+    required this.ingredients,
+    required this.prepTime,
   });
 
   factory FoodModel.fromJson(Map<String, dynamic> json) {
     return FoodModel(
       id: json['id'],
-      title: json['title'],
-      description: json['description'],
-      price: (json['price'] as num).toDouble(),
+      title: json['name'],
+      description: (json['instructions'] as List).join(' '),
+      // Recipes don't have price, so we simulate it based on ID or prep time
+      price: 10.0 + (json['prepTimeMinutes'] as int) / 2,
       rating: (json['rating'] as num).toDouble(),
-      category: json['category'],
-      thumbnail: json['thumbnail'],
-      images: List<String>.from(json['images']),
+      category: json['cuisine'],
+      thumbnail: json['image'],
+      ingredients: List<String>.from(json['ingredients']),
+      prepTime: json['prepTimeMinutes'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'title': title,
-      'description': description,
+      'name': title,
+      'instructions': [description],
       'price': price,
       'rating': rating,
-      'category': category,
-      'thumbnail': thumbnail,
-      'images': images,
+      'cuisine': category,
+      'image': thumbnail,
+      'ingredients': ingredients,
+      'prepTimeMinutes': prepTime,
     };
   }
 
   @override
-  List<Object?> get props => [id, title, description, price, rating, category, thumbnail, images];
+  List<Object?> get props => [id, title, description, price, rating, category, thumbnail, ingredients, prepTime];
 }
