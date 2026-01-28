@@ -18,6 +18,7 @@ import 'package:exam_flutter/features/cart/providers/cart_provider.dart';
 import 'package:exam_flutter/features/favorites/providers/favorites_provider.dart';
 import 'package:exam_flutter/features/orders/providers/order_provider.dart';
 import 'package:exam_flutter/features/location/providers/location_provider.dart';
+import 'package:exam_flutter/features/notifications/providers/notification_provider.dart';
 
 // Screens
 import 'package:exam_flutter/features/welcome/screens/welcome_screen.dart';
@@ -28,6 +29,16 @@ import 'package:exam_flutter/features/main_shell/screens/main_shell.dart';
 import 'package:exam_flutter/features/food/screens/food_list_page.dart';
 import 'package:exam_flutter/features/food/screens/food_details_page.dart';
 import 'package:exam_flutter/features/favorites/screens/favorites_page.dart';
+import 'package:exam_flutter/features/cart/screens/checkout_page.dart';
+import 'package:exam_flutter/features/profile/screens/address_page.dart';
+import 'package:exam_flutter/features/profile/screens/payment_methods_page.dart';
+import 'package:exam_flutter/features/food/screens/restaurant_map_page.dart';
+import 'package:exam_flutter/features/notifications/screens/notification_page.dart';
+import 'package:exam_flutter/features/food/screens/promotion_detail_page.dart';
+import 'package:exam_flutter/features/food/models/promotion_model.dart';
+import 'package:exam_flutter/features/profile/providers/profile_provider.dart';
+import 'package:exam_flutter/features/profile/screens/edit_profile_page.dart';
+import 'package:exam_flutter/features/profile/screens/help_support_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -60,6 +71,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FavoritesProvider(prefs)),
         ChangeNotifierProvider(create: (_) => OrderProvider(prefs)),
         ChangeNotifierProvider(create: (_) => LocationProvider(locationService)),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider(prefs)),
       ],
       child: Consumer<AuthProvider>(
         builder: (context, authProvider, child) {
@@ -77,6 +90,17 @@ class MyApp extends StatelessWidget {
               '/food-list': (context) => const FoodListPage(),
               '/food-details': (context) => const FoodDetailsPage(),
               '/favorites': (context) => const FavoritesPage(),
+              '/checkout': (context) => const CheckoutPage(),
+              '/address': (context) => const AddressPage(),
+              '/payment-methods': (context) => const PaymentMethodsPage(),
+              '/map': (context) => const RestaurantMapPage(),
+              '/notifications': (context) => const NotificationPage(),
+              '/promotion-detail': (context) {
+                final promotion = ModalRoute.of(context)!.settings.arguments as PromotionModel;
+                return PromotionDetailPage(promotion: promotion);
+              },
+              '/edit-profile': (context) => const EditProfilePage(),
+              '/help-support': (context) => const HelpSupportPage(),
             },
           );
         },

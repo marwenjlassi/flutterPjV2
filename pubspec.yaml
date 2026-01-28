@@ -44,6 +44,7 @@ dependencies:
   # UI & Styling
   google_fonts: ^6.1.0
   animate_do: ^3.1.2
+  quickalert: ^1.1.0
   
   # Utilities
   email_validator: ^2.1.17

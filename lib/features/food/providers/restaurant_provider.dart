@@ -10,6 +10,7 @@ class RestaurantProvider with ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   String _searchQuery = '';
+  String _selectedCategory = 'All';
 
   RestaurantProvider(this._apiService);
 
@@ -17,6 +18,7 @@ class RestaurantProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   String get searchQuery => _searchQuery;
+  String get selectedCategory => _selectedCategory;
 
   Future<void> fetchRestaurants() async {
     _isLoading = true;
@@ -46,11 +48,25 @@ class RestaurantProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void filterByCategory(String category) {
+    _selectedCategory = category;
+    _applySearch();
+    notifyListeners();
+  }
+
   void _applySearch() {
-    if (_searchQuery.isEmpty) {
-      _filteredRestaurants = _allRestaurants;
-    } else {
-      _filteredRestaurants = _allRestaurants
+    _filteredRestaurants = _allRestaurants;
+
+    // Apply category filter
+    if (_selectedCategory != 'All') {
+      _filteredRestaurants = _filteredRestaurants
+          .where((r) => r.category == _selectedCategory)
+          .toList();
+    }
+
+    // Apply search filter
+    if (_searchQuery.isNotEmpty) {
+      _filteredRestaurants = _filteredRestaurants
           .where((r) =>
               r.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
               r.category.toLowerCase().contains(_searchQuery.toLowerCase()))

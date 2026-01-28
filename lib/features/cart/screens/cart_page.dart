@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:exam_flutter/core/constants/app_constants.dart';
 import 'package:exam_flutter/features/cart/providers/cart_provider.dart';
-import 'package:exam_flutter/features/orders/providers/order_provider.dart';
-import 'package:exam_flutter/features/orders/models/order_model.dart';
-import 'package:exam_flutter/features/location/providers/location_provider.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -12,7 +9,6 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cart = context.watch<CartProvider>();
-    final location = context.watch<LocationProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -35,7 +31,21 @@ class CartPage extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final item = cart.items.values.toList()[index];
                       return ListTile(
-                        leading: Image.network(item.food.thumbnail, width: 50, height: 50, fit: BoxFit.cover),
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            item.food.thumbnail,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              width: 50,
+                              height: 50,
+                              color: Colors.grey[200],
+                              child: const Icon(Icons.fastfood, color: Colors.grey),
+                            ),
+                          ),
+                        ),
                         title: Text(item.food.title),
                         subtitle: Text('\$${item.food.price} x ${item.quantity}'),
                         trailing: Row(
@@ -61,7 +71,11 @@ class CartPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     boxShadow: [
-                      BoxShadow(color: Colors.black12, blurRadius: 10, offset: Offset(0, -5)),
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.05),
+                        blurRadius: 10,
+                        offset: const Offset(0, -5),
+                      ),
                     ],
                   ),
                   child: Column(
@@ -70,8 +84,14 @@ class CartPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Total:', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                          Text('\$${cart.totalAmount.toStringAsFixed(2)}',
-                              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppConstants.primaryOrange)),
+                          Text(
+                            '\$${cart.totalAmount.toStringAsFixed(2)}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.primaryOrange,
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: AppConstants.spacing16),
@@ -82,24 +102,13 @@ class CartPage extends StatelessWidget {
                             backgroundColor: AppConstants.primaryOrange,
                             padding: const EdgeInsets.symmetric(vertical: 16),
                           ),
-                          onPressed: () async {
-                            final order = OrderModel(
-                              id: DateTime.now().millisecondsSinceEpoch.toString(),
-                              items: cart.items.values.toList(),
-                              totalAmount: cart.totalAmount,
-                              date: DateTime.now(),
-                              status: 'Pending',
-                              deliveryAddress: location.currentAddress,
-                            );
-                            await context.read<OrderProvider>().addOrder(order);
-                            cart.clear();
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text('Order placed successfully!')),
-                              );
-                            }
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/checkout');
                           },
-                          child: const Text('PLACE ORDER', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          child: const Text(
+                            'PROCEED TO CHECKOUT',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                     ],

@@ -35,10 +35,26 @@ class ProfilePage extends StatelessWidget {
               style: const TextStyle(color: AppConstants.lightText),
             ),
             const SizedBox(height: AppConstants.spacing40),
-            _buildProfileItem(Icons.person_outline, 'Edit Profile'),
-            _buildProfileItem(Icons.location_on_outlined, 'Shipping Address'),
-            _buildProfileItem(Icons.payment_outlined, 'Payment Methods'),
-            _buildProfileItem(Icons.help_outline, 'Help & Support'),
+            _buildProfileItem(
+              icon: Icons.person_outline,
+              title: 'Edit Profile',
+              onTap: () => Navigator.pushNamed(context, '/edit-profile'),
+            ),
+            _buildProfileItem(
+              icon: Icons.location_on_outlined,
+              title: 'Shipment Address',
+              onTap: () => Navigator.pushNamed(context, '/address'),
+            ),
+            _buildProfileItem(
+              icon: Icons.payment_outlined,
+              title: 'Payment Methods',
+              onTap: () => Navigator.pushNamed(context, '/payment-methods'),
+            ),
+            _buildProfileItem(
+              icon: Icons.help_outline,
+              title: 'Help & Support',
+              onTap: () => Navigator.pushNamed(context, '/help-support'),
+            ),
             const SizedBox(height: AppConstants.spacing40),
             CustomButton(
               text: 'Logout',
@@ -55,12 +71,12 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _buildProfileItem(IconData icon, String title) {
+  Widget _buildProfileItem({required IconData icon, required String title, required VoidCallback onTap}) {
     return ListTile(
       leading: Icon(icon, color: AppConstants.primaryOrange),
       title: Text(title),
       trailing: const Icon(Icons.chevron_right),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }

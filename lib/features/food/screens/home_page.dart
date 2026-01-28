@@ -6,6 +6,9 @@ import 'package:exam_flutter/features/food/providers/food_provider.dart';
 import 'package:exam_flutter/features/location/providers/location_provider.dart';
 import 'package:exam_flutter/features/food/widgets/restaurant_card.dart';
 import 'package:exam_flutter/features/food/widgets/popular_food_card.dart';
+import 'package:exam_flutter/features/notifications/providers/notification_provider.dart';
+import 'package:exam_flutter/features/food/models/promotion_model.dart';
+import 'package:exam_flutter/features/food/widgets/promotion_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -78,8 +81,45 @@ class _HomePageState extends State<HomePage> {
               ),
               actions: [
                 IconButton(
-                  icon: const Icon(Icons.notifications_none),
-                  onPressed: () {},
+                  icon: const Icon(Icons.map_outlined),
+                  onPressed: () => Navigator.pushNamed(context, '/map'),
+                ),
+                Consumer<NotificationProvider>(
+                  builder: (context, provider, child) {
+                    return Stack(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.notifications_none),
+                          onPressed: () => Navigator.pushNamed(context, '/notifications'),
+                        ),
+                        if (provider.unreadCount > 0)
+                          Positioned(
+                            right: 8,
+                            top: 8,
+                            child: Container(
+                              padding: const EdgeInsets.all(2),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              constraints: const BoxConstraints(
+                                minWidth: 16,
+                                minHeight: 16,
+                              ),
+                              child: Text(
+                                '${provider.unreadCount}',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -116,11 +156,100 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
 
+            // Category Filters
+            SliverToBoxAdapter(
+              child: Consumer<RestaurantProvider>(
+                builder: (context, provider, child) {
+                  final categories = ['All', 'Italian', 'Mexican', 'Indian', 'Japanese', 'French', 'American', 'Asian', 'Thai', 'Chinese'];
+                  
+                  return SizedBox(
+                    height: 50,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      padding: const EdgeInsets.symmetric(horizontal: AppConstants.spacing16),
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        final category = categories[index];
+                        final isSelected = provider.selectedCategory == category;
+                        
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: FilterChip(
+                            label: Text(category),
+                            selected: isSelected,
+                            onSelected: (selected) {
+                              provider.filterByCategory(category);
+                            },
+                            selectedColor: AppConstants.primaryOrange.withValues(alpha: 0.2),
+                            checkmarkColor: AppConstants.primaryOrange,
+                            labelStyle: TextStyle(
+                              color: isSelected ? AppConstants.primaryOrange : AppConstants.darkText,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ),
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
+                              side: BorderSide(
+                                color: isSelected ? AppConstants.primaryOrange : Colors.grey[300]!,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            // Promotional Carousel
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.only(top: AppConstants.spacing16),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 180,
+                      child: PageView.builder(
+                        controller: PageController(viewportFraction: 0.9),
+                        itemCount: PromotionModel.samplePromotions.length,
+                        itemBuilder: (context, index) {
+                          return PromotionCard(
+                            promotion: PromotionModel.samplePromotions[index],
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    // Indicator (Simple dots)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                        PromotionModel.samplePromotions.length,
+                        (index) => Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppConstants.primaryOrange.withValues(alpha: 0.3),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            const SliverToBoxAdapter(child: SizedBox(height: AppConstants.spacing16)),
+
             // Popular Food Section
             Consumer<RestaurantProvider>(
               builder: (context, restaurantProvider, child) {
-                if (restaurantProvider.searchQuery.isNotEmpty) return const SliverToBoxAdapter(child: SizedBox.shrink());
-                
+                if (restaurantProvider.searchQuery.isNotEmpty || restaurantProvider.selectedCategory != 'All') {
+                  return const SliverToBoxAdapter(child: SizedBox.shrink());
+                }
                 return SliverToBoxAdapter(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
