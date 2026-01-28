@@ -15,27 +15,38 @@ class FoodCard extends StatelessWidget {
     final favoritesProvider = context.watch<FavoritesProvider>();
     final isFavorite = favoritesProvider.isFoodFavorite(food.id.toString());
 
-    return Card(
-      margin: const EdgeInsets.only(bottom: AppConstants.spacing16),
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConstants.radiusMedium)),
-      clipBehavior: Clip.antiAlias,
-      child: Row(
-        children: [
-          Stack(
-            children: [
-              Image.network(
-                food.thumbnail,
-                height: 110,
-                width: 110,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 110,
-                  width: 110,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.fastfood, color: Colors.grey),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/food-details',
+          arguments: food,
+        );
+      },
+      child: Card(
+        margin: const EdgeInsets.only(bottom: AppConstants.spacing16),
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppConstants.radiusMedium)),
+        clipBehavior: Clip.antiAlias,
+        child: Row(
+          children: [
+            Stack(
+              children: [
+                Hero(
+                  tag: 'food_${food.id}',
+                  child: Image.network(
+                    food.thumbnail,
+                    height: 110,
+                    width: 110,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      height: 110,
+                      width: 110,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.fastfood, color: Colors.grey),
+                    ),
+                  ),
                 ),
-              ),
               Positioned(
                 top: 4,
                 left: 4,
@@ -110,6 +121,7 @@ class FoodCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

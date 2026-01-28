@@ -11,38 +11,49 @@ class PopularFoodCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 180,
-      margin: const EdgeInsets.only(right: AppConstants.spacing16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              Image.network(
-                food.thumbnail,
-                height: 120,
-                width: 180,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 120,
-                  width: 180,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.fastfood, color: Colors.grey),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          '/food-details',
+          arguments: food,
+        );
+      },
+      child: Container(
+        width: 180,
+        margin: const EdgeInsets.only(right: AppConstants.spacing16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(AppConstants.radiusMedium),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                Hero(
+                  tag: 'food_${food.id}',
+                  child: Image.network(
+                    food.thumbnail,
+                    height: 120,
+                    width: 180,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      height: 120,
+                      width: 180,
+                      color: Colors.grey[200],
+                      child: const Icon(Icons.fastfood, color: Colors.grey),
+                    ),
+                  ),
                 ),
-              ),
               Positioned(
                 top: 8,
                 left: 8,
@@ -123,6 +134,7 @@ class PopularFoodCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

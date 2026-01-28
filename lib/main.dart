@@ -26,6 +26,7 @@ import 'package:exam_flutter/features/authentication/screens/sign_up_screen.dart
 import 'package:exam_flutter/features/authentication/screens/forgot_password_screen.dart';
 import 'package:exam_flutter/features/main_shell/screens/main_shell.dart';
 import 'package:exam_flutter/features/food/screens/food_list_page.dart';
+import 'package:exam_flutter/features/food/screens/food_details_page.dart';
 import 'package:exam_flutter/features/favorites/screens/favorites_page.dart';
 
 void main() async {
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
               '/forgot-password': (context) => const ForgotPasswordScreen(),
               '/home': (context) => const MainShell(),
               '/food-list': (context) => const FoodListPage(),
+              '/food-details': (context) => const FoodDetailsPage(),
               '/favorites': (context) => const FavoritesPage(),
             },
           );
