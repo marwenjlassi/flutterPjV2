@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:exam_flutter/features/food/models/review_model.dart';
 
 class FoodModel extends Equatable {
   final int id;
@@ -10,6 +11,7 @@ class FoodModel extends Equatable {
   final String thumbnail;
   final List<String> ingredients;
   final int prepTime;
+  final List<ReviewModel> reviews;
 
   const FoodModel({
     required this.id,
@@ -21,6 +23,7 @@ class FoodModel extends Equatable {
     required this.thumbnail,
     required this.ingredients,
     required this.prepTime,
+    this.reviews = const [],
   });
 
   factory FoodModel.fromJson(Map<String, dynamic> json) {
@@ -35,6 +38,9 @@ class FoodModel extends Equatable {
       thumbnail: json['image'],
       ingredients: List<String>.from(json['ingredients']),
       prepTime: json['prepTimeMinutes'],
+      reviews: json['reviews'] != null
+          ? (json['reviews'] as List).map((r) => ReviewModel.fromJson(r)).toList()
+          : [],
     );
   }
 
@@ -49,9 +55,10 @@ class FoodModel extends Equatable {
       'image': thumbnail,
       'ingredients': ingredients,
       'prepTimeMinutes': prepTime,
+      'reviews': reviews.map((r) => r.toJson()).toList(),
     };
   }
 
   @override
-  List<Object?> get props => [id, title, description, price, rating, category, thumbnail, ingredients, prepTime];
+  List<Object?> get props => [id, title, description, price, rating, category, thumbnail, ingredients, prepTime, reviews];
 }

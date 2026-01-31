@@ -73,9 +73,9 @@ class _MainShellState extends State<MainShell> {
             label: 'Cart',
           ),
           const BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_outlined),
-            activeIcon: Icon(Icons.receipt_long),
-            label: 'Orders',
+            icon: Icon(Icons.local_shipping_outlined),
+            activeIcon: Icon(Icons.local_shipping),
+            label: 'Tracking',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),

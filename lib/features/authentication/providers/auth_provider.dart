@@ -77,16 +77,16 @@ class AuthProvider with ChangeNotifier {
         password: password,
       );
 
-      // Auto login after registration
-      _currentUser = user;
-      _isAuthenticated = true;
+      // Do not auto login after registration
+      // _currentUser = user;
+      // _isAuthenticated = true;
 
-      // Set current user in local storage
-      await _authService.logoutUser();
-      await _authService.authenticateUser(
-        email: email,
-        password: password,
-      );
+      // Do not authenticate yet, let user sign in manually
+      // await _authService.logoutUser();
+      // await _authService.authenticateUser(
+      //   email: email,
+      //   password: password,
+      // );
 
       _setLoading(false);
       notifyListeners();

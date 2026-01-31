@@ -27,19 +27,35 @@ class OrdersPage extends StatelessWidget {
                   child: ExpansionTile(
                     title: Text('Order #${order.id.substring(order.id.length - 5)}'),
                     subtitle: Text(DateFormat('MMM dd, yyyy - HH:mm').format(order.date)),
-                    trailing: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: order.status == 'Pending' ? Colors.orange.withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        order.status,
-                        style: TextStyle(
-                          color: order.status == 'Pending' ? Colors.orange : Colors.green,
-                          fontWeight: FontWeight.bold,
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: order.status == 'Pending' ? Colors.orange.withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            order.status,
+                            style: TextStyle(
+                              color: order.status == 'Pending' ? Colors.orange : Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: const Icon(Icons.track_changes, color: AppConstants.primaryOrange),
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/order-tracking',
+                              arguments: order,
+                            );
+                          },
+                        ),
+                      ],
                     ),
                     children: [
                       Padding(

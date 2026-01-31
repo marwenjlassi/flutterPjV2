@@ -45,6 +45,8 @@ dependencies:
   google_fonts: ^6.1.0
   animate_do: ^3.1.2
   quickalert: ^1.1.0
+  flutter_rating_bar: ^4.0.1
+  easy_stepper: ^0.8.5
   
   # Utilities
   email_validator: ^2.1.17

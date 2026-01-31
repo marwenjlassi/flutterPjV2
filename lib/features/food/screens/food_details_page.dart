@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:exam_flutter/core/constants/app_constants.dart';
 import 'package:exam_flutter/features/food/models/food_model.dart';
 import 'package:exam_flutter/features/cart/providers/cart_provider.dart';
+import 'package:exam_flutter/features/food/widgets/review_dialog.dart';
+import 'package:exam_flutter/features/food/providers/food_provider.dart';
 
 class FoodDetailsPage extends StatelessWidget {
   const FoodDetailsPage({super.key});
@@ -62,18 +64,40 @@ class FoodDetailsPage extends StatelessWidget {
                           color: Colors.amber.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(AppConstants.radiusSmall),
                         ),
-                        child: Row(
-                          children: [
-                            const Icon(Icons.star, color: Colors.amber, size: 20),
-                            const SizedBox(width: 4),
-                            Text(
-                              food.rating.toStringAsFixed(1),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                        child: GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => ReviewDialog(
+                                foodTitle: food.title,
+                                onSubmit: (rating, comment) {
+                                  context.read<FoodProvider>().addReview(food.id, rating, comment);
+                                },
                               ),
-                            ),
-                          ],
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(Icons.star, color: Colors.amber, size: 20),
+                              const SizedBox(width: 4),
+                              Text(
+                                food.rating.toStringAsFixed(1),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 4),
+                              const Text(
+                                '(Rate)',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: AppConstants.primaryOrange,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -119,6 +143,8 @@ class FoodDetailsPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 24),
 
+                  const SizedBox(height: 24),
+
                   // Ingredients Section
                   const Text(
                     'Ingredients',
@@ -140,6 +166,58 @@ class FoodDetailsPage extends StatelessWidget {
                       );
                     }).toList(),
                   ),
+                  const SizedBox(height: 24),
+
+                  // Reviews Section
+                  const Text(
+                    'Reviews',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  if (food.reviews.isEmpty)
+                    const Text('No reviews yet. Be the first to rate!', style: TextStyle(color: AppConstants.lightText))
+                  else
+                    ...food.reviews.map((review) => Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    review.userName,
+                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                  ),
+                                  Row(
+                                    children: [
+                                      const Icon(Icons.star, color: Colors.amber, size: 16),
+                                      const SizedBox(width: 4),
+                                      Text(
+                                        review.rating.toString(),
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                review.comment,
+                                style: const TextStyle(color: AppConstants.darkText),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${review.date.day}/${review.date.month}/${review.date.year}',
+                                style: const TextStyle(color: AppConstants.lightText, fontSize: 12),
+                              ),
+                              const Divider(),
+                            ],
+                          ),
+                        )),
                   const SizedBox(height: 100), // Space for bottom button
                 ],
               ),

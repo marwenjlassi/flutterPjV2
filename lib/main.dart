@@ -39,6 +39,8 @@ import 'package:exam_flutter/features/food/models/promotion_model.dart';
 import 'package:exam_flutter/features/profile/providers/profile_provider.dart';
 import 'package:exam_flutter/features/profile/screens/edit_profile_page.dart';
 import 'package:exam_flutter/features/profile/screens/help_support_page.dart';
+import 'package:exam_flutter/features/orders/screens/order_tracking_page.dart';
+import 'package:exam_flutter/features/orders/models/order_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +103,10 @@ class MyApp extends StatelessWidget {
               },
               '/edit-profile': (context) => const EditProfilePage(),
               '/help-support': (context) => const HelpSupportPage(),
+              '/order-tracking': (context) {
+                final order = ModalRoute.of(context)!.settings.arguments as OrderModel;
+                return OrderTrackingPage(order: order);
+              },
             },
           );
         },
